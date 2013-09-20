@@ -5,6 +5,12 @@ Simple Node Project Tool
 ------------------------
 This is a tool to create simple NodeJs projects.
 
+Features
+--------
+* Create project folder
+* create package.json file
+* install server libraries (express, socket.io, express.io)
+* create simple server file
 
 Usage
 -----
