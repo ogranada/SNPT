@@ -1,0 +1,101 @@
+#!/usr/bin/python
+
+#
+# Simple Node Project Tool ##
+#
+
+import os
+from os import sep as SEP
+from optparse import OptionParser
+
+
+YES = 'y,yes,si'.split(',')
+
+# TEMPLATES
+
+simple_server_tpl = """// NodeJs Server
+
+var express = require('express');
+var server = express();
+
+// TODO: code logic here.
+server.get("/", function(req, res){
+    res.send("Hello World!!!");
+});
+
+server.listen(3000);
+"""
+json_tpl = '''{
+    "name":"",
+    "version":"0.0.1",
+    "dependencies":{
+    }
+}
+'''
+
+# END TEMPLATES
+
+
+def mkproject(name, verbose=False):
+    if verbose:
+        print "creating project %s" % (name)
+    os.mkdir(name)
+    json = open("%s%spackage.json" % (name, SEP), 'w')
+    json.write(json_tpl)
+    json.close()
+    readme = open("%s%sREADME.md" % (name, SEP), 'w')
+    readme.write("\n%s\n%s\n\n\n" % (name, '=' * len(name)))
+    readme.close()
+
+
+def installPackage(name, package, verbose=False):
+    if verbose:
+        print "installing %s into %s" % (package, name)
+    os.system("npm install %s --save" % (package))
+
+
+def createSimpleServer(name, verbose=False):
+    if verbose:
+        print "creating server.js into %s" % (name)
+    server = open("server.js", 'w')
+    server.write(simple_server_tpl)
+    server.close()
+
+
+def main():
+    usage = "usage: %prog [options] name"
+    parser = OptionParser(usage)
+    parser.add_option("-x", "--install-express",
+                      action="store_true", dest="install_express", default=False,
+                      help="install express.js package")
+    parser.add_option("-i", "--install-socket-io",
+                      action="store_true", dest="install_socketio", default=False,
+                      help="install socket.io package")
+    parser.add_option("-e", "--install-express-io",
+                      action="store_true", dest="install_expressio", default=False,
+                      help="install express.io package")
+    parser.add_option("-s", "--create-simple-server",
+                      action="store_true", dest="create_server", default=False,
+                      help="create server.js file with simple server code")
+    parser.add_option("-v", "--verbose",
+                      action="store_true", dest="verbose", default=False)
+    (options, args) = parser.parse_args()
+    if len(args) != 1:
+        parser.error("incorrect number of arguments.\nUse -h flag for help")
+    else:
+        name = args[0]
+        mkproject(name, options.verbose)
+        os.chdir(name)
+        if options.install_express:
+            installPackage(name, "express", options.verbose)
+        if options.install_socketio:
+            installPackage(name, "socket.io", options.verbose)
+        if options.install_expressio:
+            installPackage(name, "express.io", options.verbose)
+        if options.create_server:
+            createSimpleServer(name, options.verbose)
+        print 'Ok'
+
+
+if __name__ == '__main__':
+    main()
