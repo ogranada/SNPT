@@ -26,4 +26,10 @@ Options:
 ```
 
 
+Example
+-------
+
+```
+sntp -e -s ProjectName
+```
 
