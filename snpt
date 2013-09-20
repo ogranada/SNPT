@@ -91,6 +91,7 @@ def main():
         if options.install_socketio:
             installPackage(name, "socket.io", options.verbose)
         if options.install_expressio:
+            installPackage(name, "express", options.verbose)
             installPackage(name, "express.io", options.verbose)
         if options.create_server:
             createSimpleServer(name, options.verbose)
