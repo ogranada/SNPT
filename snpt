@@ -18,12 +18,19 @@ simple_server_tpl = """// NodeJs Server
 var express = require('express');
 var server = express();
 
+var LOG = true;
+
 // TODO: code logic here.
 server.get("/", function(req, res){
     res.send("Hello World!!!");
 });
 
+
+if(LOG){
+    console.log("Listening port 3000...");
+}
 server.listen(3000);
+
 """
 json_tpl = '''{
     "name":"",
